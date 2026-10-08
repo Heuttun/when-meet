@@ -1,0 +1,279 @@
+<title>언제모여 서비스 한눈에</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@500;800;900&family=IBM+Plex+Sans+KR:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: 한 장짜리 소개서. 머리말 → 화면 3개(실제 UI 축소판) → 작동 구조 → 역할. 시간표 칸의 파란 농도를 페이지 전체의 시각 언어로 사용 */
+:root {
+  --bg: #f5f7fa;
+  --surface: #ffffff;
+  --ink: #15202e;
+  --muted: #5b6878;
+  --line: #dde3ea;
+  --accent: #2563eb;
+  --accent-ink: #ffffff;
+  --cell: #eef2f7;
+  --heat: 37, 99, 235;
+  --display: "Gothic A1", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --body: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f151d; --surface: #17202b; --ink: #e6ecf3; --muted: #95a3b4;
+    --line: #2a3644; --accent: #5b8cff; --accent-ink: #0b1220; --cell: #1f2a37;
+    --heat: 91, 140, 255; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f151d; --surface: #17202b; --ink: #e6ecf3; --muted: #95a3b4;
+  --line: #2a3644; --accent: #5b8cff; --accent-ink: #0b1220; --cell: #1f2a37;
+  --heat: 91, 140, 255; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.6; }
+.wrap { max-width: 1040px; margin: 0 auto; padding-inline: 20px; padding-block: 48px 64px; display: grid; gap: 56px; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; }
+p { margin: 0; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; color: var(--muted); text-transform: uppercase; }
+
+/* 머리말 */
+.hero { display: grid; grid-template-columns: 1.1fr .9fr; gap: 32px; align-items: center; }
+.hero h1 { font-size: clamp(40px, 7vw, 68px); font-weight: 900; letter-spacing: -.02em; line-height: 1.05; }
+.hero h1 span { color: var(--accent); }
+.hero .lead { font-size: 18px; color: var(--muted); max-width: 30em; margin-top: 16px; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+.fact { font-size: 13px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); }
+.hero-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.hero-grid i { aspect-ratio: 1; border-radius: 3px; background: rgba(var(--heat), var(--a, .06)); }
+
+/* 섹션 머리 */
+.sec-head { display: grid; gap: 6px; margin-bottom: 20px; }
+.sec-head h2 { font-size: 26px; font-weight: 800; }
+.sec-head p { color: var(--muted); max-width: 40em; }
+
+/* 화면 3개 */
+.screens { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.screen { display: grid; grid-template-rows: auto 1fr auto; gap: 12px; min-width: 0; }
+.step { display: flex; align-items: baseline; gap: 10px; }
+.step b { font-family: var(--mono); font-weight: 500; color: var(--accent); }
+.step h3 { font-size: 18px; font-weight: 800; }
+.phone { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px; display: grid; gap: 10px; align-content: start; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+.phone .t { font-weight: 600; font-size: 14px; }
+.field { border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px; font-size: 13px; color: var(--muted); }
+.field.filled { color: var(--ink); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font-size: 12px; padding: 3px 8px; border-radius: 6px; background: var(--cell); }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.btn { background: var(--accent); color: var(--accent-ink); border-radius: 8px; padding: 8px; text-align: center; font-weight: 600; font-size: 13px; }
+.btn.ghost { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+.screen .cap { color: var(--muted); font-size: 14px; }
+
+.grid { display: grid; grid-template-columns: 38px repeat(3, 1fr); gap: 3px; font-family: var(--mono); font-size: 11px; }
+.grid .h { text-align: center; color: var(--muted); padding-bottom: 2px; }
+.grid .tm { color: var(--muted); text-align: right; padding-right: 4px; line-height: 18px; }
+.grid .c { height: 18px; border-radius: 3px; background: var(--cell); }
+.grid .c.on { background: var(--accent); }
+.grid .c.heat { background: rgba(var(--heat), var(--a)); }
+.grid .c.best { outline: 2px solid var(--ink); outline-offset: -2px; }
+.legend { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--muted); font-family: var(--mono); }
+.legend .bar { flex: 1; height: 8px; border-radius: 4px; background: linear-gradient(90deg, var(--cell), rgba(var(--heat), 1)); }
+.best-note { font-size: 12px; background: var(--cell); border-radius: 8px; padding: 8px 10px; }
+.best-note strong { color: var(--accent); }
+
+/* 작동 구조 */
+.flow { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 12px; align-items: stretch; }
+.node { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: grid; gap: 6px; align-content: start; min-width: 0; }
+.node h3 { font-size: 16px; font-weight: 800; }
+.node p { font-size: 14px; color: var(--muted); }
+.node code { font-family: var(--mono); font-size: 12px; background: var(--cell); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere; }
+.arrow { align-self: center; font-family: var(--mono); color: var(--muted); font-size: 13px; text-align: center; }
+.data { margin-top: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.table { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; min-width: 0; }
+.table .name { font-family: var(--mono); font-weight: 500; font-size: 14px; }
+.table ul { margin: 8px 0 0; padding: 0; list-style: none; display: grid; gap: 4px; font-size: 13px; }
+.table li { display: flex; justify-content: space-between; gap: 12px; border-top: 1px solid var(--line); padding-top: 4px; }
+.table li span:first-child { font-family: var(--mono); }
+.table li span:last-child { color: var(--muted); text-align: right; }
+
+/* 역할 */
+.roles { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.role { border-top: 3px solid var(--accent); padding-top: 14px; display: grid; gap: 8px; }
+.role.b { border-top-color: var(--ink); }
+.role h3 { font-size: 18px; font-weight: 800; }
+.role ul { margin: 0; padding-left: 18px; color: var(--muted); display: grid; gap: 2px; }
+.week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 4px; }
+.day { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 8px; font-size: 12px; min-width: 0; }
+.day b { display: block; font-family: var(--mono); font-weight: 500; color: var(--accent); font-size: 11px; }
+
+footer { color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); padding-top: 16px; }
+
+@media (max-width: 820px) {
+  .hero, .screens, .roles, .data { grid-template-columns: 1fr; }
+  .flow { grid-template-columns: 1fr; }
+  .arrow { transform: rotate(90deg); }
+  .week { grid-template-columns: repeat(4, 1fr); }
+}
+</style>
+
+<main class="wrap">
+
+  <header class="hero">
+    <div>
+      <div class="eyebrow">Web service overview</div>
+      <h1>언제<span>모여</span></h1>
+      <p class="lead">모임 링크 하나만 보내면 각자 되는 시간을 칠하고, 모두가 겹치는 시간이 진하게 보이는 일정 조율 서비스입니다.</p>
+      <div class="facts">
+        <span class="fact">로그인 없음</span>
+        <span class="fact">30분 단위 시간표</span>
+        <span class="fact">링크로 공유</span>
+        <span class="fact">React · Supabase · Vercel</span>
+      </div>
+    </div>
+    <div class="hero-grid" aria-hidden="true">
+      <i style="--a:.08"></i><i style="--a:.2"></i><i style="--a:.35"></i><i style="--a:.15"></i><i style="--a:.06"></i><i style="--a:.25"></i><i style="--a:.1"></i>
+      <i style="--a:.2"></i><i style="--a:.5"></i><i style="--a:.75"></i><i style="--a:.4"></i><i style="--a:.15"></i><i style="--a:.35"></i><i style="--a:.2"></i>
+      <i style="--a:.35"></i><i style="--a:.75"></i><i style="--a:1"></i><i style="--a:.6"></i><i style="--a:.25"></i><i style="--a:.5"></i><i style="--a:.3"></i>
+      <i style="--a:.15"></i><i style="--a:.4"></i><i style="--a:.6"></i><i style="--a:.35"></i><i style="--a:.1"></i><i style="--a:.25"></i><i style="--a:.15"></i>
+      <i style="--a:.06"></i><i style="--a:.15"></i><i style="--a:.25"></i><i style="--a:.1"></i><i style="--a:.06"></i><i style="--a:.1"></i><i style="--a:.06"></i>
+    </div>
+  </header>
+
+  <section>
+    <div class="sec-head">
+      <div class="eyebrow">How it works</div>
+      <h2>화면은 딱 3개입니다</h2>
+      <p>모임을 만든 사람이 링크를 보내면, 받은 사람은 회원가입 없이 이름만 적고 시간을 고릅니다.</p>
+    </div>
+    <div class="screens">
+
+      <article class="screen">
+        <div class="step"><b>1</b><h3>모임 만들기</h3></div>
+        <div class="phone">
+          <div class="t">새 모임</div>
+          <div class="field filled">동아리 회식</div>
+          <div class="chips"><span class="chip">10/12 (월)</span><span class="chip">10/13 (화)</span><span class="chip">10/14 (수)</span></div>
+          <div class="row2"><div class="field filled">18:00 부터</div><div class="field filled">22:00 까지</div></div>
+          <div class="btn">모임 만들기</div>
+        </div>
+        <p class="cap">제목, 후보 날짜, 시간 범위를 정하면 <code style="font-family:var(--mono);font-size:12px">/m/모임id</code> 링크가 생깁니다.</p>
+      </article>
+
+      <article class="screen">
+        <div class="step"><b>2</b><h3>내 시간 고르기</h3></div>
+        <div class="phone">
+          <div class="field filled">이름: 영희</div>
+          <div class="grid" aria-label="시간 선택 예시">
+            <span></span><span class="h">월</span><span class="h">화</span><span class="h">수</span>
+            <span class="tm">18:00</span><i class="c"></i><i class="c on"></i><i class="c"></i>
+            <span class="tm">18:30</span><i class="c on"></i><i class="c on"></i><i class="c"></i>
+            <span class="tm">19:00</span><i class="c on"></i><i class="c on"></i><i class="c on"></i>
+            <span class="tm">19:30</span><i class="c on"></i><i class="c on"></i><i class="c on"></i>
+            <span class="tm">20:00</span><i class="c"></i><i class="c on"></i><i class="c on"></i>
+            <span class="tm">20:30</span><i class="c"></i><i class="c"></i><i class="c"></i>
+          </div>
+          <div class="btn">저장</div>
+        </div>
+        <p class="cap">되는 칸을 눌러 칠하고 저장합니다. 같은 이름으로 다시 들어오면 고친 내용으로 덮어씁니다.</p>
+      </article>
+
+      <article class="screen">
+        <div class="step"><b>3</b><h3>모두의 결과</h3></div>
+        <div class="phone">
+          <div class="t">참여자 4명: 철수, 영희, 민수, 지은</div>
+          <div class="grid" aria-label="결과 히트맵 예시">
+            <span></span><span class="h">월</span><span class="h">화</span><span class="h">수</span>
+            <span class="tm">18:00</span><i class="c heat" style="--a:.25"></i><i class="c heat" style="--a:.5"></i><i class="c heat" style="--a:0"></i>
+            <span class="tm">18:30</span><i class="c heat" style="--a:.5"></i><i class="c heat" style="--a:.75"></i><i class="c heat" style="--a:.25"></i>
+            <span class="tm">19:00</span><i class="c heat" style="--a:.5"></i><i class="c heat best" style="--a:1"></i><i class="c heat" style="--a:.5"></i>
+            <span class="tm">19:30</span><i class="c heat" style="--a:.75"></i><i class="c heat best" style="--a:1"></i><i class="c heat" style="--a:.5"></i>
+            <span class="tm">20:00</span><i class="c heat" style="--a:.25"></i><i class="c heat" style="--a:.75"></i><i class="c heat" style="--a:.5"></i>
+            <span class="tm">20:30</span><i class="c heat" style="--a:0"></i><i class="c heat" style="--a:.25"></i><i class="c heat" style="--a:.25"></i>
+          </div>
+          <div class="legend"><span>0명</span><span class="bar"></span><span>4명</span></div>
+          <div class="best-note"><strong>추천</strong> 10/13 (화) 19:00–20:00 · 4명 모두 가능</div>
+          <div class="btn ghost">링크 복사</div>
+        </div>
+        <p class="cap">겹치는 사람이 많을수록 진해지고, 전원이 되는 시간은 테두리로 표시합니다.</p>
+      </article>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <div class="eyebrow">Under the hood</div>
+      <h2>서버 없이 돌아가는 구조</h2>
+      <p>화면은 Vercel에 올라가고, 데이터는 Supabase에 바로 저장합니다. 따로 만드는 서버 코드가 없어서 1주일 안에 배포까지 갈 수 있습니다.</p>
+    </div>
+    <div class="flow">
+      <div class="node">
+        <h3>브라우저 (React)</h3>
+        <p>모임 만들기, 시간표, 결과 화면. 칸 하나는 <code>2026-10-13_19:00</code> 같은 문자열입니다.</p>
+      </div>
+      <div class="arrow">저장·조회<br>→</div>
+      <div class="node">
+        <h3>Supabase</h3>
+        <p>모임과 참여자를 저장하는 데이터베이스. 화면에서 <code>saveAvailability()</code> 같은 함수로 직접 부릅니다.</p>
+      </div>
+      <div class="arrow">GitHub에<br>올리면 →</div>
+      <div class="node">
+        <h3>Vercel + GitHub Actions</h3>
+        <p>main에 합쳐지면 자동 배포. PR마다 린트, 테스트, 빌드를 자동으로 검사합니다.</p>
+      </div>
+    </div>
+    <div class="data">
+      <div class="table">
+        <div class="name">meetings</div>
+        <ul>
+          <li><span>title</span><span>모임 제목</span></li>
+          <li><span>dates</span><span>후보 날짜 목록</span></li>
+          <li><span>start_hour · end_hour</span><span>시간 범위 (시)</span></li>
+        </ul>
+      </div>
+      <div class="table">
+        <div class="name">participants</div>
+        <ul>
+          <li><span>meeting_id</span><span>어느 모임인지</span></li>
+          <li><span>name</span><span>참여자 이름 (모임마다 하나)</span></li>
+          <li><span>slots</span><span>고른 칸 목록</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <div class="eyebrow">Team &amp; schedule</div>
+      <h2>2명이 1주일 동안 나눠서 만듭니다</h2>
+    </div>
+    <div class="roles">
+      <div class="role">
+        <h3>A · 화면 담당</h3>
+        <ul>
+          <li>모임 만들기 폼과 페이지 이동</li>
+          <li>30분 단위 시간표 선택</li>
+          <li>결과 히트맵, 링크 복사, 모바일 화면</li>
+        </ul>
+      </div>
+      <div class="role b">
+        <h3>B · 데이터·배포 담당</h3>
+        <ul>
+          <li>Supabase 테이블과 저장·조회 함수</li>
+          <li>칸별 인원 계산과 테스트 코드</li>
+          <li>Vercel 배포, 자동 검사, README</li>
+        </ul>
+      </div>
+    </div>
+    <div class="week" style="margin-top:20px">
+      <div class="day"><b>Day 1</b>기획 · 첫 배포</div>
+      <div class="day"><b>Day 2</b>모임 만들기</div>
+      <div class="day"><b>Day 3</b>시간표 · 저장</div>
+      <div class="day"><b>Day 4</b>결과 히트맵</div>
+      <div class="day"><b>Day 5</b>공유 · 실사용 테스트</div>
+      <div class="day"><b>Day 6</b>모바일 · 추천 시간</div>
+      <div class="day"><b>Day 7</b>README · 회고</div>
+    </div>
+  </section>
+
+  <footer>화면 그림은 완성 모습을 보여주기 위한 예시입니다. 코드: github.com/Heuttun/when-meet</footer>
+</main>
