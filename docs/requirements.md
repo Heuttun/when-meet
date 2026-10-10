@@ -168,19 +168,19 @@
 
 ## 4. 요구사항 추적표
 
-개발하면서 Issue 번호와 상태를 채웁니다. 7일차에 이 표가 모두 "완료"인지 확인합니다.
+Issue 번호는 [GitHub Issues](https://github.com/Heuttun/when-meet/issues)와 같습니다. 개발하면서 상태를 `대기 → 진행 중 → 완료`로 바꾸고, 7일차에 모두 "완료"인지 확인합니다. F-02와 F-04의 화면 쪽 작업은 시간표 작업(#3)에 함께 들어갑니다.
 
 | 기능 | 화면·컴포넌트 (A) | 함수 (B) | Issue | 상태 |
 | --- | --- | --- | --- | --- |
-| F-01 모임 만들기 | `CreatePage` | `createMeeting` | # | 대기 |
-| F-02 링크 접속 | `MeetingPage` | `getMeeting`, `vercel.json` | # | 대기 |
-| F-03 시간 선택 | `TimeGrid` | — | # | 대기 |
-| F-04 선택 저장 | `MeetingPage` | `saveAvailability`, `getMyAvailability` | # | 대기 |
-| F-05 결과 히트맵 | `ResultGrid` | `getParticipants`, `countBySlot` | # | 대기 |
-| F-06 링크 복사 | `MeetingPage` | — | # | 대기 |
-| F-07 모바일 대응 | 전체 CSS | — | # | 대기 |
-| F-08 추천 시간 | `ResultGrid` | `bestSlots` | # | 대기 |
-| F-09 가능한 사람 보기 | `ResultGrid` | `namesBySlot` | # | 대기 |
+| F-01 모임 만들기 | `CreatePage` | `createMeeting` | #1 (A), #2 (B) | 대기 |
+| F-02 링크 접속 | `MeetingPage` | `getMeeting`, `vercel.json` | #3 (A), #2 (B) | 대기 |
+| F-03 시간 선택 | `TimeGrid` | — | #3 (A) | 대기 |
+| F-04 선택 저장 | `MeetingPage` | `saveAvailability`, `getMyAvailability` | #3 (A), #4 (B) | 대기 |
+| F-05 결과 히트맵 | `ResultGrid` | `getParticipants`, `countBySlot` | #5 (A), #6 (B) | 대기 |
+| F-06 링크 복사 | `MeetingPage` | — | #7 (A) | 대기 |
+| F-07 모바일 대응 | 전체 CSS | — | #8 (A) | 대기 |
+| F-08 추천 시간 | `ResultGrid` | `bestSlots` | #9 (A·B) | 대기 |
+| F-09 가능한 사람 보기 | `ResultGrid` | `namesBySlot` | 없음 (선택 기능, 시간 남으면 등록) | 대기 |
 
 ---
 
