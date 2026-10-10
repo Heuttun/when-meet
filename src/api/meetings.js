@@ -4,12 +4,34 @@ import { supabase } from '../lib/supabase'
 
 // Day 2: 모임 저장 후 id 반환
 export async function createMeeting({ title, dates, startHour, endHour }) {
-  throw new Error('TODO: createMeeting')
+  const { data, error } = await supabase
+    .from('meetings')
+    .insert({ title, dates, start_hour: startHour, end_hour: endHour })
+    .select('id')
+    .single()
+  if (error) throw error
+  return data.id
 }
 
 // Day 2: 모임 정보 반환, 없으면 null
 export async function getMeeting(id) {
-  throw new Error('TODO: getMeeting')
+  const { data, error } = await supabase
+    .from('meetings')
+    .select('*')
+    .eq('id', id)
+    .maybeSingle()
+  if (error) {
+    if (error.code === '22P02') return null // id 모양이 아예 틀림 (예: "test")
+    throw error
+  }
+  if (!data) return null
+  return {
+    id: data.id,
+    title: data.title,
+    dates: data.dates,
+    startHour: data.start_hour,
+    endHour: data.end_hour,
+  }
 }
 
 // Day 3: 참여자 이름과 선택한 칸 저장 (같은 이름이면 덮어쓰기)
