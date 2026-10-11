@@ -6,6 +6,8 @@
 import { useState } from 'react'
 // 6-4. 페이지 이동 도구 가져오기
 import { useNavigate } from 'react-router-dom'
+// 7-3. B가 만든 모임 저장 함수 가져오기
+import { createMeeting } from '../api/meetings'
 
 // 4-5. "2026-10-13" → "10/13 (화)"로 바꾸는 함수
 function formatDate(d) {
@@ -68,9 +70,13 @@ function CreatePage() {
     // 6-5. 저장 중에는 버튼 막기
     setSaving(true)
     try {
-      // 6-4. B 함수가 오기 전 (가짜 이동): 검사를 통과하면 바로 이동
-      //      → 7단계에서 createMeeting으로 바꿀 자리
-      navigate('/m/test123')
+      // 7-3. 진짜 저장: B의 createMeeting으로 저장하고 받은 id로 이동
+      const id = await createMeeting({ title: title.trim(), dates, startHour, endHour })
+      navigate('/m/' + id)
+    } catch (e) {
+      // 7-3. 저장 실패 안내
+      console.error(e)
+      setErrors({ save: '모임을 만들지 못했어요. 다시 시도해 주세요' })
     } finally {
       setSaving(false)
     }
