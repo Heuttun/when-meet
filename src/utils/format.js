@@ -10,3 +10,13 @@ export function formatDate(d) {
 export function formatHour(h) {
   return `${String(h).padStart(2, '0')}:00`
 }
+
+// 18, 22 → ["18:00", "18:30", ..., "21:30"] (끝 시각은 칸이 아님)
+export function makeTimes(startHour, endHour) {
+  const times = []
+  for (let h = startHour; h < endHour; h++) {
+    const hh = String(h).padStart(2, '0')
+    times.push(`${hh}:00`, `${hh}:30`)
+  }
+  return times
+}
