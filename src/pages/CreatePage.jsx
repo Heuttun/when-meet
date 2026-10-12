@@ -8,17 +8,8 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 // 7-3. B가 만든 모임 저장 함수 가져오기
 import { createMeeting } from '../api/meetings'
-
-// 4-5. "2026-10-13" → "10/13 (화)"로 바꾸는 함수
-function formatDate(d) {
-  const day = new Date(d + 'T00:00')
-  return `${day.getMonth() + 1}/${day.getDate()} (${'일월화수목금토'[day.getDay()]})`
-}
-
-// 5-2. 9 → "09:00"으로 바꾸는 함수 (시간 선택 목록에 쓰임)
-function formatHour(h) {
-  return `${String(h).padStart(2, '0')}:00`
-}
+// 3일차. 날짜·시각 모양 함수 가져오기 (src/utils/format.js로 옮김)
+import { formatDate, formatHour } from '../utils/format'
 
 // 6-3. 오류 문구를 빨간 글씨로 보여 줄 모양
 const errorStyle = { color: '#dc2626', fontSize: 13, margin: '4px 0' }
