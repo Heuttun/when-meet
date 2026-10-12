@@ -10,6 +10,7 @@ import { getMeeting, saveAvailability } from '../api/meetings'
 import { formatDate, formatHour } from '../utils/format'
 // 5-5. 시간표 컴포넌트 가져오기
 import TimeGrid from '../components/TimeGrid'
+import ResultGrid from '../components/ResultGrid'
 
 function MeetingPage() {
   // 4-2. 주소 /m/:id 에서 id 꺼내기
@@ -135,10 +136,19 @@ function MeetingPage() {
         </section>
 
         {/* 4일차 4-1. 오른쪽(휴대폰은 아래): 모두의 결과 */}
-        <section>
+                <section>
           <h2>모두의 결과</h2>
-          {/* 5번 단계: 여기에 결과 표(ResultGrid)를 붙일 거예요 */}
-          <p>결과 표가 여기에 들어가요</p>
+          {/* 5-5. 결과 표 (임시: 가짜 숫자. 6번에서 진짜 값으로 바꿔요) */}
+          <ResultGrid
+            dates={meeting.dates}
+            startHour={meeting.startHour}
+            endHour={meeting.endHour}
+            counts={{
+              [`${meeting.dates[0]}_${formatHour(meeting.startHour)}`]: 3,
+              [`${meeting.dates[0]}_${String(meeting.startHour).padStart(2, '0')}:30`]: 1,
+            }}
+            total={3}
+          />
         </section>
       </div>
     </main>
