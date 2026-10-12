@@ -36,7 +36,16 @@ export async function getMeeting(id) {
 
 // Day 3: 참여자 이름과 선택한 칸 저장 (같은 이름이면 덮어쓰기)
 export async function saveAvailability(meetingId, name, slots) {
-  throw new Error('TODO: saveAvailability')
+  const trimmed = name.trim()
+  if (!trimmed) throw new Error('이름이 비어 있어요')
+
+  const { error } = await supabase
+    .from('participants')
+    .upsert(
+      { meeting_id: meetingId, name: trimmed, slots },
+      { onConflict: 'meeting_id,name' } // 같은 모임 + 같은 이름이면 덮어쓰기
+    )
+  if (error) throw error
 }
 
 // Day 4: 참여자 목록 [{ name, slots }] 반환
