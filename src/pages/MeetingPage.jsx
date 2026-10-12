@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { getMeeting } from '../api/meetings'
 import { formatDate, formatHour } from '../utils/format'
+import TimeGrid from '../components/TimeGrid'
 
 function MeetingPage() {
   // 4-2. 주소 /m/:id 에서 id 꺼내기
@@ -48,7 +49,14 @@ function MeetingPage() {
       <p>
         {dateText} · {formatHour(meeting.startHour)} ~ {formatHour(meeting.endHour)} · 30분 단위
       </p>
-      {/* 5번 단계: 여기에 시간표(TimeGrid)를 붙일 거예요 */}
+      {/* 5-5. 시간표 붙이기 (임시: 고른 칸 없음, 눌러도 아무 일 없음) */}
+      <TimeGrid
+        dates={meeting.dates}
+        startHour={meeting.startHour}
+        endHour={meeting.endHour}
+        selected={[]}
+        onToggle={() => {}}
+      />
     </main>
   )
 }
