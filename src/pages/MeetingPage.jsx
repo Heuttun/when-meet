@@ -87,45 +87,60 @@ function MeetingPage() {
         {dateText} · {formatHour(meeting.startHour)} ~ {formatHour(meeting.endHour)} · 30분 단위
       </p>
 
-      {/* 6-3. 이름 입력칸 (최대 10자) */}
-      <input
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="이름 (최대 10자)"
-        maxLength={10}
-      />
+      {/* 4일차 4-1. 두 부분 감싸기: 휴대폰은 위아래, PC는 나란히 (App.css) */}
+      <div className="meeting-layout">
+        {/* 4일차 4-1. 왼쪽(휴대폰은 위): 내 시간 고르기 */}
+        <section>
+          <h2>내 시간 고르기</h2>
 
-      {/* 6-3. 안내 문구 */}
-      <p>되는 칸을 눌러 칠하세요</p>
+          {/* 6-3. 이름 입력칸 (최대 10자) */}
+          <input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="이름 (최대 10자)"
+            maxLength={10}
+          />
 
-      {/* 6-3. 시간표: 진짜 상태를 넘겨요 */}
-      <TimeGrid
-        dates={meeting.dates}
-        startHour={meeting.startHour}
-        endHour={meeting.endHour}
-        selected={selected}
-        onToggle={toggleSlot}
-      />
+          {/* 6-3. 안내 문구 */}
+          <p>되는 칸을 눌러 칠하세요</p>
 
-      {/* 7-2. 저장 버튼: 이름이 비었거나 저장 중이면 막기 */}
-      <button type="button" onClick={handleSave} disabled={!name.trim() || saving}>
-        {saving ? '저장 중...' : '저장'}
-      </button>
+          {/* 6-3. 시간표: 진짜 상태를 넘겨요 */}
+          <TimeGrid
+            dates={meeting.dates}
+            startHour={meeting.startHour}
+            endHour={meeting.endHour}
+            selected={selected}
+            onToggle={toggleSlot}
+          />
 
-      {/* 7-4. 저장 결과 문구: 성공은 검정, 실패는 빨강 */}
-      {saveMsg && (
-        <p
-          style={{
-            background: saveOk ? '#111827' : '#dc2626',
-            color: '#fff',
-            padding: '10px 14px',
-            borderRadius: 8,
-            textAlign: 'center',
-          }}
-        >
-          {saveMsg}
-        </p>
-      )}
+          {/* 7-2. 저장 버튼: 이름이 비었거나 저장 중이면 막기 */}
+          <button type="button" onClick={handleSave} disabled={!name.trim() || saving}>
+            {saving ? '저장 중...' : '저장'}
+          </button>
+
+          {/* 7-4. 저장 결과 문구: 성공은 검정, 실패는 빨강 */}
+          {saveMsg && (
+            <p
+              style={{
+                background: saveOk ? '#111827' : '#dc2626',
+                color: '#fff',
+                padding: '10px 14px',
+                borderRadius: 8,
+                textAlign: 'center',
+              }}
+            >
+              {saveMsg}
+            </p>
+          )}
+        </section>
+
+        {/* 4일차 4-1. 오른쪽(휴대폰은 아래): 모두의 결과 */}
+        <section>
+          <h2>모두의 결과</h2>
+          {/* 5번 단계: 여기에 결과 표(ResultGrid)를 붙일 거예요 */}
+          <p>결과 표가 여기에 들어가요</p>
+        </section>
+      </div>
     </main>
   )
 }

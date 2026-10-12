@@ -1,0 +1,10 @@
+/* 4일차: 모임 페이지 두 부분 배치 — 휴대폰은 위아래, PC(769px 이상)는 나란히 */
+.meeting-layout {
+  display: grid;
+  gap: 24px;
+}
+@media (min-width: 769px) {
+  .meeting-layout {
+    grid-template-columns: 1fr 1fr;
+  }
+}
