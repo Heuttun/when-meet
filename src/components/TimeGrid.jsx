@@ -4,17 +4,9 @@
 
 // 5-4. Fragment 가져오기 (보이지 않는 묶음 상자)
 import { Fragment } from 'react'
-import { formatDate } from '../utils/format'
+import { formatDate, makeTimes } from '../utils/format'
 
-// 5-1. 칸 시각 목록 만들기: < 라서 끝 시각은 안 들어가요
-function makeTimes(startHour, endHour) {
-  const times = []
-  for (let h = startHour; h < endHour; h++) {
-    const hh = String(h).padStart(2, '0')
-    times.push(`${hh}:00`, `${hh}:30`)
-  }
-  return times // 18~22시 → ["18:00", "18:30", ..., "21:30"] 8개
-}
+
 
 // 5-2. props로 날짜·시각·고른 칸·누를 때 할 일 받기
 function TimeGrid({ dates, startHour, endHour, selected, onToggle }) {
