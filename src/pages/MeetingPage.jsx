@@ -5,11 +5,14 @@
 // 4-1. 필요한 도구 가져오기
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-// 7-4. B의 저장 함수도 같이 가져오기
-import { getMeeting, saveAvailability } from '../api/meetings'
+// 7-4. B의 저장 함수 + 4일차 6-1. 참여자 불러오기 함수 가져오기
+import { getMeeting, saveAvailability, getParticipants } from '../api/meetings'
+// 4일차 6-1. 칸별 인원 세기 함수 가져오기 (B)
+import { countBySlot } from '../utils/countBySlot'
 import { formatDate, formatHour } from '../utils/format'
 // 5-5. 시간표 컴포넌트 가져오기
 import TimeGrid from '../components/TimeGrid'
+// 4일차 5-5. 결과 표 컴포넌트 가져오기
 import ResultGrid from '../components/ResultGrid'
 
 function MeetingPage() {
@@ -33,6 +36,18 @@ function MeetingPage() {
     }
   }
 
+  // 4일차 6-2. 참여자 목록 상태 (처음엔 빈 목록)
+  const [participants, setParticipants] = useState([])
+
+  // 4일차 7-1. 참여자 다시 불러오기 (새로고침 버튼 · 저장 직후에 사용)
+  async function loadResults() {
+    try {
+      setParticipants(await getParticipants(id))
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
   // 7-1. 저장 중인지, 저장 결과 문구 상태 만들기
   const [saving, setSaving] = useState(false)
   const [saveMsg, setSaveMsg] = useState('')
@@ -46,6 +61,7 @@ function MeetingPage() {
       await saveAvailability(id, name.trim(), selected)
       setSaveOk(true)
       setSaveMsg('저장됐어요')
+      loadResults() // 4일차 7-3. 저장하면 결과도 다시 불러오기
     } catch (e) {
       console.error(e)
       setSaveOk(false)
@@ -63,6 +79,11 @@ function MeetingPage() {
         console.error(e)
         setLoadError(true)
       })
+
+    // 4일차 6-3. 참여자도 같이 불러오기
+    getParticipants(id)
+      .then((list) => setParticipants(list))
+      .catch((e) => console.error(e))
   }, [id])
 
   // 4-4. return 앞에서 상태별로 먼저 돌려보내기
@@ -80,6 +101,9 @@ function MeetingPage() {
   const first = meeting.dates[0]
   const last = meeting.dates[meeting.dates.length - 1]
   const dateText = first === last ? formatDate(first) : `${formatDate(first)} ~ ${formatDate(last)}`
+
+  // 4일차 6-4. 칸별 인원 세기: { "2026-10-13_19:00": 3, ... }
+  const counts = countBySlot(participants)
 
   return (
     <main>
@@ -136,18 +160,30 @@ function MeetingPage() {
         </section>
 
         {/* 4일차 4-1. 오른쪽(휴대폰은 아래): 모두의 결과 */}
-                <section>
+        <section>
           <h2>모두의 결과</h2>
-          {/* 5-5. 결과 표 (임시: 가짜 숫자. 6번에서 진짜 값으로 바꿔요) */}
+
+          {/* 4일차 7-2. 새로고침 버튼: 다른 사람이 새로 저장한 결과 불러오기 */}
+          <button type="button" onClick={loadResults}>
+            새로고침
+          </button>
+
+          {/* 4일차 6-5. 참여자 목록: 0명이면 안내 문구 */}
+          {participants.length === 0 ? (
+            <p>아직 아무도 입력하지 않았어요</p>
+          ) : (
+            <p>
+              참여자 {participants.length}명: {participants.map((p) => p.name).join(', ')}
+            </p>
+          )}
+
+          {/* 4일차 6-6. 결과 표: 이제 진짜 값 */}
           <ResultGrid
             dates={meeting.dates}
             startHour={meeting.startHour}
             endHour={meeting.endHour}
-            counts={{
-              [`${meeting.dates[0]}_${formatHour(meeting.startHour)}`]: 3,
-              [`${meeting.dates[0]}_${String(meeting.startHour).padStart(2, '0')}:30`]: 1,
-            }}
-            total={3}
+            counts={counts}
+            total={participants.length}
           />
         </section>
       </div>
