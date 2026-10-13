@@ -3,6 +3,24 @@
 // 예: [{ name: '철수', slots: ['2026-10-12_09:30'] }] → { '2026-10-12_09:30': 1 }
 
 export function countBySlot(participants) {
-  // TODO: 구현 후 countBySlot.test.js 에 테스트 추가
-  return {}
+  const counts = {}
+  for (const p of participants) {
+    for (const slot of p.slots) {
+      counts[slot] = (counts[slot] || 0) + 1 // 처음 보는 칸은 0에서 시작
+    }
+  }
+  return counts
+}
+
+// 칸별 가능한 사람 이름 목록 (6일차 F-09 "가능한 사람 보기"용)
+// 예: { '2026-10-12_09:30': ['철수', '영희'] }
+export function namesBySlot(participants) {
+  const names = {}
+  for (const p of participants) {
+    for (const slot of p.slots) {
+      if (!names[slot]) names[slot] = []
+      names[slot].push(p.name)
+    }
+  }
+  return names
 }

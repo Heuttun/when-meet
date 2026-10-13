@@ -50,7 +50,13 @@ export async function saveAvailability(meetingId, name, slots) {
 
 // Day 4: 참여자 목록 [{ name, slots }] 반환
 export async function getParticipants(meetingId) {
-  throw new Error('TODO: getParticipants')
+  const { data, error } = await supabase
+    .from('participants')
+    .select('name, slots') // 필요한 칸만
+    .eq('meeting_id', meetingId) // 이 모임 사람만
+    .order('created_at') // 먼저 입력한 사람부터
+  if (error) throw error
+  return data // 아무도 없으면 []
 }
 
 // Day 5: 다시 들어온 사람의 기존 선택 반환, 없으면 []
