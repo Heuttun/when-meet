@@ -6,8 +6,8 @@
 import { useEffect, useState } from 'react'
 // 5일차 5-2. useLocation 추가 (어떻게 들어왔는지 쪽지 읽기)
 import { useParams, Link, useLocation } from 'react-router-dom'
-// 7-4. B의 저장 함수 + 4일차 6-1. 참여자 불러오기 함수 가져오기
-import { getMeeting, saveAvailability, getParticipants } from '../api/meetings'
+// 7-4. B의 저장 함수 + 4일차 6-1. 참여자 불러오기 + 5일차 6-1. 예전 칸 불러오기 함수
+import { getMeeting, saveAvailability, getParticipants, getMyAvailability } from '../api/meetings'
 // 4일차 6-1. 칸별 인원 세기 함수 가져오기 (B)
 import { countBySlot } from '../utils/countBySlot'
 import { formatDate, formatHour } from '../utils/format'
@@ -53,6 +53,26 @@ function MeetingPage() {
       setSelected(selected.filter((s) => s !== slot))
     } else {
       setSelected([...selected, slot])
+    }
+  }
+
+  // 5일차 6-2. 다시 들어온 사람: 불러왔다는 안내 문구
+  const [loadedMsg, setLoadedMsg] = useState('')
+
+  // 5일차 6-3. 이름칸에서 나가면(onBlur) 그 이름으로 예전에 고른 칸 불러오기
+  async function loadMySlots() {
+    const trimmed = name.trim()
+    if (!trimmed) return
+    try {
+      const mine = await getMyAvailability(id, trimmed)
+      if (mine.length > 0) {
+        setSelected(mine)
+        setLoadedMsg(`${trimmed}님이 전에 고른 칸을 불러왔어요. 고친 뒤 다시 저장하세요`)
+      } else {
+        setLoadedMsg('')
+      }
+    } catch (e) {
+      console.error(e)
     }
   }
 
@@ -151,9 +171,13 @@ function MeetingPage() {
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
+            onBlur={loadMySlots} // 5일차 6-4. 이름칸에서 나갈 때 예전 칸 불러오기
             placeholder="이름 (최대 10자)"
             maxLength={10}
           />
+
+          {/* 5일차 6-5. 예전 칸을 불러왔다는 안내 */}
+          {loadedMsg && <p>{loadedMsg}</p>}
 
           {/* 6-3. 안내 문구 */}
           <p>되는 칸을 눌러 칠하세요</p>
