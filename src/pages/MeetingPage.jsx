@@ -22,6 +22,21 @@ function MeetingPage() {
   // 4-2. 상태 만들기: undefined = 불러오는 중, null = 없는 모임
   const [meeting, setMeeting] = useState(undefined)
   const [loadError, setLoadError] = useState(false)
+  
+  // 5일차 4-1. 링크 복사 결과 문구
+  const [copyMsg, setCopyMsg] = useState('')
+
+  // 5일차 4-2. 링크 복사: 지금 주소를 클립보드에 넣고, 2초 뒤 문구 지우기
+  async function copyLink() {
+    try {
+      await navigator.clipboard.writeText(window.location.href)
+      setCopyMsg('복사됐어요!')
+    } catch (e) {
+      console.error(e)
+      setCopyMsg('복사하지 못했어요. 주소창의 주소를 복사해 주세요')
+    }
+    setTimeout(() => setCopyMsg(''), 2000)
+  }
 
   // 6-1. 이름과 고른 칸 상태 만들기
   const [name, setName] = useState('')
@@ -111,6 +126,12 @@ function MeetingPage() {
       <p>
         {dateText} · {formatHour(meeting.startHour)} ~ {formatHour(meeting.endHour)} · 30분 단위
       </p>
+      
+      {/* 5일차 4-3. 링크 복사 버튼 + 결과 문구 (2초 뒤 사라짐) */}
+      <button type="button" onClick={copyLink}>
+        링크 복사
+      </button>
+      {copyMsg && <p>{copyMsg}</p>}
 
       {/* 4일차 4-1. 두 부분 감싸기: 휴대폰은 위아래, PC는 나란히 (App.css) */}
       <div className="meeting-layout">
