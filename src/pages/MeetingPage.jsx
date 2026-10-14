@@ -4,7 +4,8 @@
 
 // 4-1. 필요한 도구 가져오기
 import { useEffect, useState } from 'react'
-import { useParams, Link } from 'react-router-dom'
+// 5일차 5-2. useLocation 추가 (어떻게 들어왔는지 쪽지 읽기)
+import { useParams, Link, useLocation } from 'react-router-dom'
 // 7-4. B의 저장 함수 + 4일차 6-1. 참여자 불러오기 함수 가져오기
 import { getMeeting, saveAvailability, getParticipants } from '../api/meetings'
 // 4일차 6-1. 칸별 인원 세기 함수 가져오기 (B)
@@ -22,7 +23,11 @@ function MeetingPage() {
   // 4-2. 상태 만들기: undefined = 불러오는 중, null = 없는 모임
   const [meeting, setMeeting] = useState(undefined)
   const [loadError, setLoadError] = useState(false)
-  
+
+  // 5일차 5-2. 방금 만든 모임인지 쪽지 읽기 (링크로 들어오면 쪽지가 없음)
+  const location = useLocation()
+  const justCreated = location.state?.justCreated === true
+
   // 5일차 4-1. 링크 복사 결과 문구
   const [copyMsg, setCopyMsg] = useState('')
 
@@ -126,7 +131,10 @@ function MeetingPage() {
       <p>
         {dateText} · {formatHour(meeting.startHour)} ~ {formatHour(meeting.endHour)} · 30분 단위
       </p>
-      
+
+      {/* 5일차 5-3. 방금 만든 모임이면 안내 */}
+      {justCreated && <p>모임을 만들었어요! 이 링크를 친구들에게 보내세요 👇</p>}
+
       {/* 5일차 4-3. 링크 복사 버튼 + 결과 문구 (2초 뒤 사라짐) */}
       <button type="button" onClick={copyLink}>
         링크 복사
