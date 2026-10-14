@@ -1,5 +1,7 @@
 # 언제모여
 
+![CI](https://github.com/Heuttun/when-meet/actions/workflows/ci.yml/badge.svg)
+
 > 링크 하나로 끝내는 모임 시간 조율 서비스
 
 🚧 1주일 2인 프로젝트로 개발 중입니다. 완성 후 데모 링크와 GIF가 여기에 들어갑니다.

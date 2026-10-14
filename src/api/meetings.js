@@ -61,5 +61,15 @@ export async function getParticipants(meetingId) {
 
 // Day 5: 다시 들어온 사람의 기존 선택 반환, 없으면 []
 export async function getMyAvailability(meetingId, name) {
-  throw new Error('TODO: getMyAvailability')
+  const trimmed = name.trim()
+  if (!trimmed) return [] // 빈 이름은 찾을 것도 없음
+
+  const { data, error } = await supabase
+    .from('participants')
+    .select('slots')
+    .eq('meeting_id', meetingId)
+    .eq('name', trimmed) // 저장할 때처럼 공백 지운 이름으로
+    .maybeSingle() // 한 줄 또는 없음
+  if (error) throw error
+  return data ? data.slots : [] // 없으면 빈 목록
 }
