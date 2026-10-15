@@ -33,3 +33,11 @@
 .grid-scroll button:hover:not(:disabled) {
   filter: brightness(0.95);
 }
+
+/* 6일차 5-3. 고른 칸 정보 (날짜 시각 · N명 / 이름들) */
+.picked-info {
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #fef3c7;
+  font-size: 14px;
+}
