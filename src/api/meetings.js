@@ -55,7 +55,10 @@ export async function getParticipants(meetingId) {
     .select('name, slots') // 필요한 칸만
     .eq('meeting_id', meetingId) // 이 모임 사람만
     .order('created_at') // 먼저 입력한 사람부터
-  if (error) throw error
+  if (error) {
+    if (error.code === '22P02') return [] // id 모양이 아예 틀림 (예: "test")
+    throw error
+  }
   return data // 아무도 없으면 []
 }
 
