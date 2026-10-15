@@ -2,9 +2,34 @@
 .meeting-layout {
   display: grid;
   gap: 24px;
+  margin-top: 16px;
 }
 @media (min-width: 769px) {
   .meeting-layout {
     grid-template-columns: 1fr 1fr;
   }
+}
+
+/* 6일차 3-4. 그리드 안의 칸이 내용 때문에 넘치지 않게 (중요!) */
+.meeting-layout > section {
+  min-width: 0;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+/* 6일차 3-1. 표만 가로 스크롤 (페이지 전체는 안 밀림) */
+.grid-scroll {
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+/* 6일차 4-5. 시간표·결과 칸은 버튼 기본 모양(파랑·여백)을 쓰지 않음 */
+.grid-scroll button {
+  min-height: 0;
+  padding: 0;
+}
+.grid-scroll button:hover:not(:disabled) {
+  filter: brightness(0.95);
 }
