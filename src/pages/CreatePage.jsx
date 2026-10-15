@@ -63,7 +63,8 @@ function CreatePage() {
     try {
       // 7-3. 진짜 저장: B의 createMeeting으로 저장하고 받은 id로 이동
       const id = await createMeeting({ title: title.trim(), dates, startHour, endHour })
-      navigate('/m/' + id)
+      // 5일차 5-1. 이동하면서 "방금 만들었어요" 쪽지 같이 보내기
+      navigate('/m/' + id, { state: { justCreated: true } })
     } catch (e) {
       // 7-3. 저장 실패 안내
       console.error(e)
