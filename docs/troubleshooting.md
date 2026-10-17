@@ -19,3 +19,15 @@
    | 없는 모임 id로 저장하면 `409` + `23503` 에러 | FK(외래 키)가 meetings에 없는 id를 거절 | 정상 동작. 잘못된 데이터를 DB가 막아 줌 |
    | 테스트 후 `main.jsx`를 `git restore`했는데 화면엔 테스트 코드가 남아 있음 | VS Code 탭에 저장 안 된 내용(●)이 남아 있었음 | 탭을 닫을 때 **Don't Save**. `Ctrl + S`를 누르면 다시 써지니 주의 |
    | 내 함수 파일이 상대 PR에도 들어 있음 | 상대가 main을 받기 전에 내 코드를 복사해서 작업 | 내용이 같으면 충돌 없음. 다음엔 `git pull origin main`으로 받아 오기 |
+
+   ## B (데이터·배포) 4~5일차
+
+| 문제 | 원인 | 해결 |
+|---|---|---|
+| `npm test`가 끝나지 않음 | vitest 기본은 파일을 계속 지켜보는 감시 모드 | 한 번만 돌릴 땐 `npx vitest run`, 감시 모드는 `q`로 종료 |
+| push했는데 PR에 "비교할 게 없음" | `git add`·`commit` 없이 push함 | `git status`로 초록색(담김) 확인 → commit 메시지에 `1 file changed` 확인 후 push |
+| PR을 Merge해도 이슈가 안 닫힘 | 템플릿의 `Closes #번호`를 숫자로 안 바꿈 | PR 본문 Edit로 `Closes #22` 수정. 리뷰어가 발견 |
+| 이슈 양식 이름·라벨이 안 먹을 수 있음 | `bug.md` 붙여넣을 때 줄 앞에 공백 3칸 | 1번 줄이 `---`로 시작하도록 공백 제거 (front matter는 맨 앞 칸에서 시작해야 함) |
+| A의 Vercel Preview 링크가 안 열림 | Preview는 프로젝트 주인 계정만 볼 수 있음 | `git checkout feat/...`로 상대 브랜치를 받아 로컬(`npm run dev`)에서 테스트 |
+| `/m/test`에서 콘솔에 `22P02` 에러 객체 | `getParticipants`가 uuid가 아닌 id 에러를 그대로 던짐 | 데이터 점검 중 발견 → 이슈 #26 → `22P02`면 `[]` 반환으로 수정 (PR #27) |
+| 커밋 메시지에 `22ㅖ02aus` 오타 | 한/영 전환 실수 | PR 제목은 직접 수정. 명령어는 복사-붙여넣기 권장 |
