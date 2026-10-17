@@ -8,7 +8,7 @@
 
 ## 배포 주소
 
-👉 (Day 7에 공개 배포 주소 입력)
+👉 https://when-meet-xi.vercel.app
 
 > Supabase 무료 플랜은 1주일 넘게 사용이 없으면 일시정지될 수 있어요. 데모가 열리지 않으면 연락 주세요.
 
@@ -32,12 +32,13 @@
 
 ## 기술 스택과 선택 이유
 
-| 구분 | 기술 | 선택 이유 |
+| 구분 | 기술 | 고른 이유 |
 | --- | --- | --- |
-| 화면 | React (Vite) | 컴포넌트 단위로 화면을 나눠 두 사람이 나눠 개발하기 좋음 |
-| 데이터 | Supabase (PostgreSQL) | 서버 코드 없이 화면에서 바로 저장·조회 가능해 1주일 안에 완성 가능 |
-| 배포 | Vercel | GitHub에 합치면 자동 배포 |
-| 협업 | GitHub (Issues, PR, Actions) | 할 일 관리, 코드 리뷰, 자동 검사(린트·테스트·빌드)를 한 곳에서 |
+| 화면 | React + Vite | 시간표는 칸 수십 개가 클릭할 때마다 바뀌는 화면이라, 데이터(상태)만 바꾸면 화면이 다시 그려지는 React가 잘 맞았어요. Vite는 설정 없이 바로 시작할 수 있고 저장하면 화면이 바로 바뀌어요. |
+| 데이터 | Supabase (PostgreSQL) | 2명이 1주일 안에 끝내야 해서 서버(API)를 따로 만들 시간이 없었어요. 테이블만 만들면 화면에서 바로 저장·조회할 수 있고, "같은 이름은 한 사람" 같은 규칙은 DB 제약(unique)과 보안 규칙(RLS)으로 지켰어요. |
+| 배포 | Vercel | main에 합치면 자동으로 배포되고, PR마다 미리보기 주소가 생겨서 리뷰할 때 화면을 바로 볼 수 있어요. |
+| 자동 검사 | GitHub Actions + Vitest + oxlint | PR을 올릴 때마다 린트·테스트·빌드를 자동으로 돌려서, 깨진 코드가 main에 들어가지 않게 했어요. 인원 계산·추천 시간 함수는 화면 없이 테스트로 확인했어요. |
+| 협업 | GitHub Issues · PR · 리뷰 | 기능마다 이슈 → 브랜치 → PR → 서로 리뷰 → 머지 순서로 진행했어요. |
 
 ## 데이터 구조
 
@@ -101,23 +102,29 @@ docs/             기획서, 요구사항, 화면 설계서, ERD, 트러블슈�
 
 **준비물**: Node.js 22 이상, Git, Supabase 프로젝트 1개
 
+1. 코드를 내려받고 설치해요.
+
 ```bash
 git clone https://github.com/Heuttun/when-meet.git
 cd when-meet
 npm install
 ```
 
-1. Supabase SQL Editor에서 `supabase/schema.sql`을 한 번 실행해 테이블 2개를 만들어요.
-2. `.env.example`을 복사해 `.env.local`을 만들고, Supabase **Project URL**과 **공개용 키(publishable / anon)**를 넣어요.
+2. Supabase SQL Editor에서 `supabase/schema.sql`을 한 번 실행해 테이블 2개를 만들어요.
+3. `.env.example`을 복사해 `.env.local`을 만들고, Supabase **Project URL**과 **공개용 키(publishable / anon)**를 넣어요.
+
 ```bash
-   cp .env.example .env.local              # Mac · Linux
-   Copy-Item .env.example .env.local       # Windows PowerShell
+cp .env.example .env.local          # Mac · Linux
+Copy-Item .env.example .env.local   # Windows PowerShell
 ```
-   > `.env.local`은 `.gitignore`에 들어 있어 GitHub에 올라가지 않아요. secret / service_role 키는 넣지 마세요.
-3. 실행하고 테스트해요.
+
+> `.env.local`은 `.gitignore`에 들어 있어 GitHub에 올라가지 않아요. secret / service_role 키는 넣지 마세요.
+
+4. 실행하고 테스트해요.
+
 ```bash
-   npm run dev       # http://localhost:5173
-   npx vitest run    # 테스트 한 번 실행
+npm run dev       # http://localhost:5173
+npx vitest run    # 테스트 한 번 실행
 ```
 
 ## 팀과 역할
@@ -131,6 +138,14 @@ npm install
 
 (Day 7에 [docs/troubleshooting.md](docs/troubleshooting.md)에서 대표 사례 3개 정리)
 
+## 한계와 다음 개선
+
+- **로그인이 없어요**: 이름만 같으면 다른 사람 응답을 덮어쓸 수 있어요. 친구끼리 쓰는 작은 모임이라 간단함을 우선했어요.
+- **응답 삭제가 없어요**: 실수로 지워지지 않게 DELETE 정책을 일부러 두지 않았어요. 삭제는 관리자가 대시보드에서만 할 수 있어요.
+- **실시간 갱신이 아니에요**: 다른 사람이 방금 저장한 결과는 새로고침해야 보여요. → 다음 개선: Supabase Realtime
+- **시간대(타임존) 구분이 없어요**: 모두 같은 시간대(한국 시간)에 있다고 가정했어요.
+- **무료 플랜 일시정지**: Supabase 무료 플랜은 오래 안 쓰면 멈출 수 있어요.
+
 ## 회고
 
-(Day 7에 작성)
+A·B가 같이 쓴 회고는 [docs/retrospective.md](docs/retrospective.md)에 있어요.
