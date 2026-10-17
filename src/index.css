@@ -1,0 +1,84 @@
+/* 6일차 4-2. 색·글꼴을 한 곳에서 정하기 (CSS 변수) */
+:root {
+  --main: #2563eb;      /* 메인 파랑 */
+  --main-dark: #1d4ed8; /* 버튼에 마우스 올렸을 때 */
+  --ink: #111827;       /* 글자 */
+  --muted: #6b7280;     /* 흐린 글자 */
+  --line: #d1d5db;      /* 테두리 */
+  --bg: #f9fafb;        /* 바탕 */
+  font-family: 'Pretendard', system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+/* 6일차 4-3. 화면 양옆 16px, 가운데 정렬, 너무 넓어지지 않게 */
+main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}
+
+h1 {
+  font-size: 24px;
+  margin: 0;
+}
+
+h2 {
+  font-size: 18px;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+/* 6일차 4-3. 화면 요소 사이 간격 12px (위아래로 딱 붙지 않게) */
+main > * + *,
+section > * + * {
+  margin-top: 12px;
+}
+
+/* 6일차 4-4. 버튼 모양 통일: 둥근 모서리, 높이 40px, 마우스 올리면 진하게 */
+button {
+  font: inherit;
+  min-height: 40px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 8px;
+  background: var(--main);
+  color: #fff;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+  background: var(--main-dark);
+}
+
+button:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+}
+
+/* 입력칸도 높이 40px, 너비 꽉 차게 */
+input,
+select {
+  font: inherit;
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+}
+
+input:not([type='date']) {
+  width: 100%;
+  max-width: 360px;
+}
