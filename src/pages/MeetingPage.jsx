@@ -10,6 +10,8 @@ import { useParams, Link, useLocation } from 'react-router-dom'
 import { getMeeting, saveAvailability, getParticipants, getMyAvailability } from '../api/meetings'
 // 4일차 6-1. 칸별 인원 세기 + 6일차 5-4. 칸별 이름 목록 (B)
 import { countBySlot, namesBySlot } from '../utils/countBySlot'
+// 6일차 6-1. 추천 시간 구간 (B)
+import { bestRanges } from '../utils/bestSlots'
 import { formatDate, formatHour } from '../utils/format'
 // 5-5. 시간표 컴포넌트 가져오기
 import TimeGrid from '../components/TimeGrid'
@@ -146,6 +148,8 @@ function MeetingPage() {
   const counts = countBySlot(participants)
   // 6일차 5-4. 칸별 가능한 사람 이름: { "2026-10-13_19:00": ["철수", "영희"], ... }
   const names = namesBySlot(participants)
+  // 6일차 6-2. 추천 시간: 가장 많이 겹치는 구간 최대 3개
+  const best = bestRanges(counts)
 
   return (
     <main>
@@ -230,6 +234,20 @@ function MeetingPage() {
             <p>
               참여자 {participants.length}명: {participants.map((p) => p.name).join(', ')}
             </p>
+          )}
+
+          {/* 6일차 6-3. 추천 시간 (참여자가 없으면 숨김) */}
+          {best.length > 0 && (
+            <div className="best">
+              <strong>추천 시간</strong>
+              <ul>
+                {best.map((r) => (
+                  <li key={r.date + r.start}>
+                    {formatDate(r.date)} {r.start}–{r.end} · {r.count}명 가능
+                  </li>
+                ))}
+              </ul>
+            </div>
           )}
 
           {/* 4일차 6-6. 결과 표 (6일차 5-4. 칸별 이름 names 추가) */}
