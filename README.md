@@ -14,7 +14,15 @@
 
 ## 데모
 
-(Day 7에 GIF 추가: 모임 만들기 → 시간 선택 → 결과 히트맵)
+![언제모여 데모](docs/images/demo.gif)
+
+| 모임 만들기 | 시간 고르기 | 결과 |
+| --- | --- | --- |
+| ![](docs/images/screen-create.png) | ![](docs/images/screen-select.png) | ![](docs/images/screen-result.png) |
+
+| 휴대폰 1 | 휴대폰 2 | 휴대폰 3 |
+| --- | --- | --- |
+| ![](docs/images/screen-mobile_1.png) | ![](docs/images/screen-mobile_2.png) | ![](docs/images/screen-mobile_3.png) |
 
 ## 주요 기능
 
